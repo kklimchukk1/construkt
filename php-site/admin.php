@@ -115,7 +115,7 @@ if ($tab === 'reports') {
 
     // Top products
     $reports['top_products'] = $db->query("
-        SELECT p.name, SUM(oi.quantity) as sold, SUM(oi.price * oi.quantity) as revenue
+        SELECT p.name, SUM(oi.quantity) as sold, SUM(oi.subtotal) as revenue
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         JOIN orders o ON oi.order_id = o.id
@@ -127,7 +127,7 @@ if ($tab === 'reports') {
 
     // Sales by category
     $reports['sales_by_category'] = $db->query("
-        SELECT c.name, COUNT(DISTINCT o.id) as orders, COALESCE(SUM(oi.price * oi.quantity), 0) as revenue
+        SELECT c.name, COUNT(DISTINCT o.id) as orders, COALESCE(SUM(oi.subtotal), 0) as revenue
         FROM categories c
         LEFT JOIN products p ON p.category_id = c.id
         LEFT JOIN order_items oi ON oi.product_id = p.id
