@@ -101,9 +101,19 @@ const CommandPanel = ({ onCommand }) => {
                                     const length = prompt('Enter length (m):');
                                     const width = prompt('Enter width (m):');
                                     if (length && width) {
+                                        const lengthNum = parseFloat(length);
+                                        const widthNum = parseFloat(width);
+                                        if (isNaN(lengthNum) || isNaN(widthNum)) {
+                                            alert('Please enter valid numbers');
+                                            return;
+                                        }
+                                        if (lengthNum <= 0 || widthNum <= 0) {
+                                            alert('Values must be greater than zero');
+                                            return;
+                                        }
                                         handleCalculator('area', {
-                                            length: parseFloat(length),
-                                            width: parseFloat(width)
+                                            length: lengthNum,
+                                            width: widthNum
                                         });
                                     }
                                 }}
@@ -116,10 +126,21 @@ const CommandPanel = ({ onCommand }) => {
                                     const width = prompt('Enter width (m):');
                                     const depth = prompt('Enter depth (m):');
                                     if (length && width && depth) {
+                                        const lengthNum = parseFloat(length);
+                                        const widthNum = parseFloat(width);
+                                        const depthNum = parseFloat(depth);
+                                        if (isNaN(lengthNum) || isNaN(widthNum) || isNaN(depthNum)) {
+                                            alert('Please enter valid numbers');
+                                            return;
+                                        }
+                                        if (lengthNum <= 0 || widthNum <= 0 || depthNum <= 0) {
+                                            alert('Values must be greater than zero');
+                                            return;
+                                        }
                                         handleCalculator('volume', {
-                                            length: parseFloat(length),
-                                            width: parseFloat(width),
-                                            depth: parseFloat(depth)
+                                            length: lengthNum,
+                                            width: widthNum,
+                                            depth: depthNum
                                         });
                                     }
                                 }}

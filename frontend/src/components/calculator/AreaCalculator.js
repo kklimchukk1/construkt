@@ -105,9 +105,15 @@ const AreaCalculator = ({ productDimensions, productName, onCalculationStart, on
     };
     
     // Validate numeric values
-    if (isNaN(calculationData.length) || isNaN(calculationData.width) || 
+    if (isNaN(calculationData.length) || isNaN(calculationData.width) ||
         isNaN(calculationData.coverage) || isNaN(calculationData.wastage)) {
       onCalculationError(new Error('Please enter valid numeric values'));
+      return;
+    }
+
+    // Validate positive values to prevent division by zero
+    if (calculationData.length <= 0 || calculationData.width <= 0 || calculationData.coverage <= 0) {
+      onCalculationError(new Error('Length, width, and coverage must be greater than zero'));
       return;
     }
     
@@ -131,12 +137,13 @@ const AreaCalculator = ({ productDimensions, productName, onCalculationStart, on
         const fallbackResult = {
           success: true,
           result: {
-            area: area,
-            requiredArea: requiredArea,
+            area: area.toFixed(2),
+            requiredArea: requiredArea.toFixed(2),
             wastagePercentage: calculationData.wastage,
-            wastageAmount: wastageAmount,
+            wastageAmount: wastageAmount.toFixed(2),
             coverage: calculationData.coverage,
-            unitsNeeded: Math.ceil(requiredArea / calculationData.coverage)
+            unitsNeeded: Math.ceil(requiredArea / calculationData.coverage),
+            requiredQuantity: Math.ceil(requiredArea / calculationData.coverage)
           }
         };
         console.log('Using fallback calculation result:', fallbackResult);

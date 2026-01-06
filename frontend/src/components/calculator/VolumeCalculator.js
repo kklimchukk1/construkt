@@ -77,9 +77,15 @@ const VolumeCalculator = ({ productDimensions, productName, onCalculationStart, 
     };
     
     // Validate numeric values
-    if (isNaN(calculationData.length) || isNaN(calculationData.width) || 
+    if (isNaN(calculationData.length) || isNaN(calculationData.width) ||
         isNaN(calculationData.depth) || isNaN(calculationData.wastage)) {
       onCalculationError(new Error('Please enter valid numeric values'));
+      return;
+    }
+
+    // Validate positive values
+    if (calculationData.length <= 0 || calculationData.width <= 0 || calculationData.depth <= 0) {
+      onCalculationError(new Error('Length, width, and depth must be greater than zero'));
       return;
     }
     
@@ -103,10 +109,10 @@ const VolumeCalculator = ({ productDimensions, productName, onCalculationStart, 
         const fallbackResult = {
           success: true,
           result: {
-            volume: volume,
-            requiredVolume: requiredVolume,
+            volume: volume.toFixed(2),
+            requiredVolume: requiredVolume.toFixed(2),
             wastagePercentage: calculationData.wastage,
-            wastageAmount: wastageAmount
+            wastageAmount: wastageAmount.toFixed(2)
           }
         };
         console.log('Using fallback calculation result:', fallbackResult);

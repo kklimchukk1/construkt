@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS `order_items`;
 DROP TABLE IF EXISTS `orders`;
 DROP TABLE IF EXISTS `cart_items`;
 DROP TABLE IF EXISTS `chat_logs`;
+DROP TABLE IF EXISTS `support_messages`;
+DROP TABLE IF EXISTS `product_images`;
 DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `suppliers`;
 DROP TABLE IF EXISTS `categories`;
@@ -108,6 +110,18 @@ CREATE TABLE IF NOT EXISTS `products` (
   INDEX `fk_products_supplier_idx` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Create Product Images Table
+CREATE TABLE IF NOT EXISTS `product_images` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_id` INT UNSIGNED NOT NULL,
+  `image_url` VARCHAR(255) NOT NULL,
+  `display_order` INT NOT NULL DEFAULT 0,
+  `is_primary` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_product_images_product_idx` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Create Chat Logs Table
 CREATE TABLE IF NOT EXISTS `chat_logs` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -120,6 +134,20 @@ CREATE TABLE IF NOT EXISTS `chat_logs` (
   PRIMARY KEY (`id`),
   INDEX `fk_chat_logs_user_idx` (`user_id`),
   INDEX `session_id_idx` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create Support Messages Table
+CREATE TABLE IF NOT EXISTS `support_messages` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` INT UNSIGNED NOT NULL,
+  `manager_id` INT UNSIGNED NULL,
+  `message` TEXT NOT NULL,
+  `is_from_customer` TINYINT(1) NOT NULL DEFAULT 1,
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_support_customer_idx` (`customer_id`),
+  INDEX `fk_support_manager_idx` (`manager_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create Cart Items Table
@@ -140,14 +168,25 @@ CREATE TABLE IF NOT EXISTS `cart_items` (
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
-  `total_amount` DECIMAL(10,2) NOT NULL,
+  `order_number` VARCHAR(20) NOT NULL,
   `status` ENUM('pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',
+  `total_amount` DECIMAL(12,2) NOT NULL,
   `shipping_address` TEXT NOT NULL,
+  `shipping_city` VARCHAR(100) NOT NULL,
+  `shipping_state` VARCHAR(100) NOT NULL,
+  `shipping_postal_code` VARCHAR(20) NOT NULL,
+  `shipping_country` VARCHAR(100) NOT NULL DEFAULT 'United States',
+  `shipping_method` VARCHAR(100) NULL,
+  `shipping_cost` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  `tax_amount` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   `phone` VARCHAR(20) NOT NULL,
+  `payment_method` VARCHAR(50) NULL,
+  `payment_status` ENUM('pending', 'paid', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
   `notes` TEXT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE INDEX `order_number_UNIQUE` (`order_number`),
   INDEX `fk_orders_user_idx` (`user_id`),
   INDEX `status_idx` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -158,7 +197,8 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `order_id` INT UNSIGNED NOT NULL,
   `product_id` INT UNSIGNED NOT NULL,
   `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
+  `unit_price` DECIMAL(10,2) NOT NULL,
+  `subtotal` DECIMAL(12,2) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_order_items_order_idx` (`order_id`),
@@ -192,9 +232,28 @@ ALTER TABLE `products`
   ON DELETE RESTRICT
   ON UPDATE CASCADE;
 
+ALTER TABLE `product_images`
+  ADD CONSTRAINT `fk_product_images_product`
+  FOREIGN KEY (`product_id`)
+  REFERENCES `products` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
 ALTER TABLE `chat_logs`
   ADD CONSTRAINT `fk_chat_logs_user`
   FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;
+
+ALTER TABLE `support_messages`
+  ADD CONSTRAINT `fk_support_customer`
+  FOREIGN KEY (`customer_id`)
+  REFERENCES `users` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_support_manager`
+  FOREIGN KEY (`manager_id`)
   REFERENCES `users` (`id`)
   ON DELETE SET NULL
   ON UPDATE CASCADE;

@@ -95,9 +95,20 @@ const LinearCalculator = ({ productDimensions, productName, onCalculationStart, 
     }
     
     // Validate numeric values
-    if (isNaN(calculationData.length) || isNaN(calculationData.wastage) || 
+    if (isNaN(calculationData.length) || isNaN(calculationData.wastage) ||
         (formData.pieceLength && isNaN(calculationData.pieceLength))) {
       onCalculationError(new Error('Please enter valid numeric values'));
+      return;
+    }
+
+    // Validate positive values
+    if (calculationData.length <= 0) {
+      onCalculationError(new Error('Length must be greater than zero'));
+      return;
+    }
+
+    if (formData.pieceLength && calculationData.pieceLength <= 0) {
+      onCalculationError(new Error('Piece length must be greater than zero'));
       return;
     }
     
@@ -114,13 +125,17 @@ const LinearCalculator = ({ productDimensions, productName, onCalculationStart, 
         onCalculationResult(result, calculationData);
       } else {
         // If the result is not in the expected format, create a fallback result
+        const requiredLength = calculationData.length * (1 + (calculationData.wastage / 100));
+        const wastageAmount = calculationData.length * (calculationData.wastage / 100);
         const fallbackResult = {
           success: true,
           result: {
-            length: calculationData.length,
-            requiredLength: calculationData.length * (1 + (calculationData.wastage / 100)),
+            length: calculationData.length.toFixed(2),
+            requiredLength: requiredLength.toFixed(2),
             wastagePercentage: calculationData.wastage,
-            wastageAmount: calculationData.length * (calculationData.wastage / 100)
+            wastageAmount: wastageAmount.toFixed(2),
+            pieceLength: calculationData.pieceLength ? calculationData.pieceLength.toFixed(2) : null,
+            piecesNeeded: calculationData.pieceLength ? Math.ceil(requiredLength / calculationData.pieceLength) : null
           }
         };
         console.log('Using fallback calculation result:', fallbackResult);
