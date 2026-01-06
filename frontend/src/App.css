@@ -1,0 +1,85 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Global background with construction theme */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(135deg, rgba(44, 62, 80, 0.6) 0%, rgba(52, 73, 94, 0.55) 100%),
+    url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920') center/cover no-repeat fixed;
+  z-index: -2;
+}
+
+/* Subtle pattern overlay */
+.App::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.02) 20px
+    );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* App-specific styles */
+
+/* Page styles */
+.home-page, .products-page, .login-page {
+  padding: 20px;
+}
+
+/* Form styles */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #0275d8;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0269c2;
+}

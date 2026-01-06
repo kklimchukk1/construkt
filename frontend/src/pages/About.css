@@ -1,0 +1,324 @@
+.about-page {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.about-hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+  padding: 80px 20px;
+  text-align: center;
+  color: white;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.about-section {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.about-section h2 {
+  font-size: 1.75rem;
+  color: #1e3a5f;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #3b82f6;
+  display: inline-block;
+}
+
+/* Company Info */
+.company-info p {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.company-stats {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+  padding: 20px 40px;
+  background: #f1f5f9;
+  border-radius: 12px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.stat-label {
+  color: #64748b;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Stores Grid */
+.stores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.store-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.store-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.store-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  padding: 20px;
+  color: white;
+}
+
+.store-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.store-body {
+  padding: 24px;
+}
+
+.store-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #475569;
+}
+
+.store-info-item a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.store-info-item a:hover {
+  text-decoration: underline;
+}
+
+.info-icon {
+  font-size: 1.2rem;
+}
+
+.store-hours {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.store-hours h4 {
+  margin: 0 0 12px 0;
+  color: #1e3a5f;
+  font-size: 1rem;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.hours-row:not(:last-child) {
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.map-link {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.map-link:hover {
+  background: #2563eb;
+}
+
+/* Delivery Table */
+.delivery-table-wrapper {
+  overflow-x: auto;
+}
+
+.delivery-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.delivery-table th,
+.delivery-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.delivery-table th {
+  background: #f8fafc;
+  color: #1e3a5f;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.delivery-table tr:hover {
+  background: #f8fafc;
+}
+
+.delivery-notes {
+  background: #fef3c7;
+  padding: 20px 24px;
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+}
+
+.delivery-notes h4 {
+  margin: 0 0 12px 0;
+  color: #92400e;
+}
+
+.delivery-notes ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #78350f;
+}
+
+.delivery-notes li {
+  margin-bottom: 8px;
+}
+
+/* Contact Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.contact-card {
+  text-align: center;
+  padding: 30px 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: transform 0.2s;
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+}
+
+.contact-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.contact-card h4 {
+  margin: 0 0 8px 0;
+  color: #1e3a5f;
+}
+
+.contact-card a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+.contact-card p {
+  margin: 8px 0 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 32px;
+  background: #f8fafc;
+  border-radius: 12px;
+  min-width: 120px;
+}
+
+.payment-icon {
+  font-size: 2rem;
+}
+
+.payment-card span:last-child {
+  color: #475569;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .about-section {
+    padding: 24px;
+  }
+
+  .company-stats {
+    gap: 20px;
+  }
+
+  .stat {
+    padding: 16px 24px;
+  }
+
+  .stores-grid {
+    grid-template-columns: 1fr;
+  }
+}

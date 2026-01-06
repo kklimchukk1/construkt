@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Log Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Log Test</h1>
+    <div class="container">
+        <div class="form-group">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" value="1">
+        </div>
+        <div class="form-group">
+            <label for="message">User Message:</label>
+            <input type="text" id="message" value="This is a test message">
+        </div>
+        <div class="form-group">
+            <label for="botResponse">Bot Response:</label>
+            <input type="text" id="botResponse" value="This is a test bot response">
+        </div>
+        <div class="form-group">
+            <label for="intent">Intent:</label>
+            <input type="text" id="intent" value="test">
+        </div>
+        <button id="sendDirectLog">Send to direct_log.php</button>
+        <button id="sendChatLogger">Send to chat_logger.php</button>
+    </div>
+    
+    <h2>Result:</h2>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('sendDirectLog').addEventListener('click', function() {
+            sendLog('direct_log.php');
+        });
+        
+        document.getElementById('sendChatLogger').addEventListener('click', function() {
+            sendLog('chat_logger.php');
+        });
+        
+        function sendLog(endpoint) {
+            const userId = document.getElementById('userId').value;
+            const message = document.getElementById('message').value;
+            const botResponse = document.getElementById('botResponse').value;
+            const intent = document.getElementById('intent').value;
+            
+            const data = {
+                user_id: userId,
+                message: message,
+                bot_response: botResponse,
+                intent: intent
+            };
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sending request to ' + endpoint + '...';
+            
+            fetch('http://localhost:8000/' + endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.innerHTML = '<h3>Response:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<h3>Error:</h3><pre>' + error + '</pre>';
+                
+                // Try XMLHttpRequest as fallback
+                resultDiv.innerHTML += '<h3>Trying XMLHttpRequest fallback...</h3>';
+                
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:8000/' + endpoint, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resultDiv.innerHTML += '<h3>XMLHttpRequest Response:</h3><pre>' + xhr.responseText + '</pre>';
+                    } else {
+                        resultDiv.innerHTML += '<h3>XMLHttpRequest Error:</h3><pre>Status: ' + xhr.status + '</pre>';
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    resultDiv.innerHTML += '<h3>XMLHttpRequest Network Error</h3>';
+                };
+                
+                xhr.send(JSON.stringify(data));
+            });
+        }
+    </script>
+</body>
+</html>

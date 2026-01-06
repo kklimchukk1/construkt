@@ -1,0 +1,27 @@
+-- Add orders tables only
+USE `construkt`;
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `total_amount` DECIMAL(10,2) NOT NULL,
+  `status` VARCHAR(20) NOT NULL DEFAULT 'pending',
+  `shipping_address` TEXT NOT NULL,
+  `phone` VARCHAR(20) NOT NULL,
+  `notes` TEXT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `order_items` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` INT UNSIGNED NOT NULL,
+  `product_id` INT UNSIGNED NOT NULL,
+  `quantity` INT NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+SELECT 'Orders tables created!' AS Status;

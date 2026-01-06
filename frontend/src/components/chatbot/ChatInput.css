@@ -1,0 +1,10 @@
+/* ChatInput component styles */
+.chat-input-form {
+  width: 100%;
+}
+
+.chat-input {
+  border-radius: 1.5rem 0 0 1.5rem;
+  display: flex;
+  gap: 8px;
+}

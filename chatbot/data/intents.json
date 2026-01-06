@@ -1,0 +1,198 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hello", "Hi", "Hey", "Good morning", "Good afternoon",
+        "Good evening", "Hi there", "Hello there", "Greetings", "Howdy"
+      ],
+      "responses": [
+        "Hello! Welcome to Construkt. How can I help you with construction materials today?",
+        "Hi there! I'm the Construkt assistant. What construction materials are you looking for?",
+        "Welcome to Construkt! I'm here to help with all your construction material needs."
+      ]
+    },
+    {
+      "tag": "farewell",
+      "patterns": [
+        "Bye", "Goodbye", "See you later", "See you", "Take care",
+        "Farewell", "Until next time", "Have a nice day", "Thanks bye"
+      ],
+      "responses": [
+        "Thank you for chatting with Construkt. Have a great day!",
+        "Goodbye! Feel free to return if you have more questions about construction materials.",
+        "Thanks for visiting Construkt. Come back anytime!"
+      ]
+    },
+    {
+      "tag": "help",
+      "patterns": [
+        "Help", "I need help", "Can you help me", "What can you do",
+        "How do I use this", "What are your capabilities", "Assist me",
+        "Support", "Guide me", "How does this work"
+      ],
+      "responses": [
+        "I can help you find construction materials, calculate quantities needed for your project, or provide information about different materials. What would you like to know?",
+        "I can assist with finding products, estimating material quantities, or answering questions about our materials. How can I help?",
+        "Need help? I can find products, provide pricing information, or help calculate materials needed for your project."
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": [
+        "What is Construkt", "Tell me about Construkt", "About Construkt",
+        "Who are you", "Company information", "About your company",
+        "What do you do", "What does Construkt do"
+      ],
+      "responses": [
+        "Construkt is a marketplace for construction materials. We connect suppliers with customers to provide high-quality materials for construction projects.",
+        "Construkt is your one-stop shop for construction materials. We offer a wide range of products from trusted suppliers.",
+        "We're Construkt - a specialized marketplace for construction materials, focused on quality, reliability, and competitive pricing."
+      ]
+    },
+    {
+      "tag": "product_inquiry",
+      "patterns": [
+        "What products do you have", "Show me products", "I need materials",
+        "Do you have", "I'm looking for", "Where can I find", "Do you sell",
+        "Products available", "Materials available", "What materials do you offer"
+      ],
+      "responses": [
+        "We offer a wide range of construction materials including cement, bricks, steel, wood, and more. What specific product are you looking for?",
+        "Our product catalog includes various building materials. What specific product are you interested in?",
+        "Construkt offers everything from basic building materials to specialized construction products. What are you looking for?"
+      ]
+    },
+    {
+      "tag": "cement_inquiry",
+      "patterns": [
+        "Do you have cement", "I need cement", "Looking for cement",
+        "Cement prices", "Types of cement", "Cement brands", "Concrete mix"
+      ],
+      "responses": [
+        "Yes, we offer various types of cement including Portland cement, quick-setting cement, and specialty mixes. Would you like to see our cement products?",
+        "We have several cement options from top brands. Our prices start from $8.99 per bag. Would you like more specific information?",
+        "Our cement selection includes options for different project needs. We have regular, quick-setting, and waterproof varieties. What type of project are you working on?"
+      ]
+    },
+    {
+      "tag": "brick_inquiry",
+      "patterns": [
+        "Do you have bricks", "I need bricks", "Looking for bricks",
+        "Brick prices", "Types of bricks", "Brick suppliers", "Clay bricks"
+      ],
+      "responses": [
+        "Yes, we offer various types of bricks including clay, concrete, and engineering bricks. Would you like to see our brick products?",
+        "We have several brick options from top suppliers. Our prices start from $0.75 per brick. Would you like more specific information?",
+        "Our brick selection includes options for different project needs. We have facing bricks, engineering bricks, and decorative options. What type of project are you working on?"
+      ]
+    },
+    {
+      "tag": "calculator_inquiry",
+      "patterns": [
+        "Calculate materials", "How much do I need", "Material calculator",
+        "Estimate quantities", "How many bricks", "How much cement",
+        "Calculate project needs", "Quantity estimation",
+        "I need to paint", "paint a wall", "flooring", "floor area",
+        "concrete for a slab", "concrete slab", "calculate concrete",
+        "how much flooring", "meters long", "meters high", "meters wide",
+        "m x", "m by", "square meters", "cubic meters",
+        "length", "width", "depth", "dimensions", "area", "volume",
+        "what if", "if wastage is", "with wastage", "and if", "change wastage",
+        "recalculate", "calculate again", "different wastage", "different coverage",
+        "what about", "how about", "if the", "and the", "but if", "but what if",
+        "change the", "modify", "update", "instead", "alternatively",
+        "different dimensions", "other dimensions", "new dimensions"
+      ],
+      "responses": [
+        "I can help you calculate the materials needed for your project. What type of material are you trying to estimate?",
+        "Our material calculator can help determine the right quantities for your project. What are you building?",
+        "To calculate materials needed, I'll need some information about your project. What are you constructing and what are the dimensions?"
+      ]
+    },
+    {
+      "tag": "price_inquiry",
+      "patterns": [
+        "How much does it cost", "Price of", "Pricing", "Cost of materials",
+        "Material prices", "How expensive", "Price list", "Price range"
+      ],
+      "responses": [
+        "Prices vary depending on the specific product, quantity, and your location. Can you tell me which material you're interested in?",
+        "We offer competitive pricing on all our construction materials. Which specific product would you like pricing information for?",
+        "Our prices are updated regularly to ensure the best value. For which material would you like to know the current price?"
+      ]
+    },
+    {
+      "tag": "delivery_inquiry",
+      "patterns": [
+        "Do you deliver", "Delivery options", "Shipping", "How long for delivery",
+        "Delivery time", "Delivery cost", "Shipping fees", "Delivery areas"
+      ],
+      "responses": [
+        "Yes, we offer delivery services for all our products. Delivery times and costs depend on your location and order size. Where are you located?",
+        "We provide delivery options across the region. Standard delivery typically takes 2-3 business days, with express options available. Would you like more information?",
+        "Our delivery service covers most areas. Delivery fees are calculated based on distance and order weight. Can I help you with a specific delivery question?"
+      ]
+    },
+    {
+      "tag": "tools_inquiry",
+      "patterns": [
+        "Do you have tools", "I need tools", "Looking for tools",
+        "Tool prices", "Types of tools", "Tool suppliers",
+        "Screwdriver", "Hammer", "Drill", "Saw", "Wrench",
+        "Power tools", "Hand tools", "Measuring tools"
+      ],
+      "responses": [
+        "Yes, we offer a wide range of construction tools including hand tools, power tools, and measuring tools. What specific tool are you looking for?",
+        "Our tools section includes everything from basic hand tools to professional-grade power tools. Are you looking for a specific brand or type?",
+        "We carry various tools for construction projects. Our selection includes hammers, screwdrivers, drills, saws, and more. What type of project are you working on?"
+      ]
+    },
+    {
+      "tag": "hardware_inquiry",
+      "patterns": [
+        "Do you have hardware", "I need hardware", "Looking for hardware",
+        "Hardware prices", "Types of hardware", "Hardware suppliers",
+        "Nails", "Screws", "Bolts", "Nuts", "Washers", "Fasteners",
+        "Door hardware", "Cabinet hardware", "Window hardware"
+      ],
+      "responses": [
+        "Yes, we offer various hardware items including nails, screws, bolts, and specialty fasteners. What specific hardware are you looking for?",
+        "Our hardware section includes fasteners, door hardware, cabinet hardware, and more. Are you looking for a specific type?",
+        "We carry a complete range of hardware for construction and renovation projects. What type of project are you working on?"
+      ]
+    },
+    {
+      "tag": "unknown",
+      "patterns": [],
+      "responses": [
+        "I'm not sure what you're looking for. Try typing a product or category name.",
+        "I couldn't find what you're looking for. Browse our product categories.",
+        "I didn't understand that. Try searching for: cement, bricks, nails, paint, etc."
+      ]
+    },
+    {
+      "tag": "categories",
+      "patterns": [
+        "categories", "all categories", "show categories", "what do you have",
+        "browse categories", "product categories", "sections"
+      ],
+      "responses": [
+        "Here are our product categories. Click one to browse products.",
+        "Browse our construction material categories.",
+        "Check out our product range. Select a category for details."
+      ]
+    },
+    {
+      "tag": "show_all_products",
+      "patterns": [
+        "all products", "show all", "everything", "full catalog",
+        "browse products", "what do you sell"
+      ],
+      "responses": [
+        "We have a wide range of products. Select a category or search by name.",
+        "Browse by category or enter a product name to search."
+      ]
+    }
+  ]
+}

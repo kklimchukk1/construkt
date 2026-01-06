@@ -1,0 +1,124 @@
+{
+  "company": {
+    "name": "Construkt",
+    "description": "Construction materials store in Lithuania",
+    "founded": 2018,
+    "slogan": "Building together!"
+  },
+  "stores": [
+    {
+      "id": "vilnius",
+      "city": "Vilnius",
+      "address": "Ukmerges g. 234, Vilnius",
+      "phone": "+370 5 123 4567",
+      "email": "vilnius@construkt.lt",
+      "coordinates": {
+        "lat": 54.7104,
+        "lng": 25.2649
+      },
+      "hours": {
+        "weekdays": {"open": "08:00", "close": "20:00"},
+        "saturday": {"open": "09:00", "close": "18:00"},
+        "sunday": {"open": "10:00", "close": "16:00"}
+      },
+      "services": ["parking", "loading", "consultation", "delivery"]
+    },
+    {
+      "id": "kaunas",
+      "city": "Kaunas",
+      "address": "Savanoriu pr. 456, Kaunas",
+      "phone": "+370 37 234 567",
+      "email": "kaunas@construkt.lt",
+      "coordinates": {
+        "lat": 54.8985,
+        "lng": 23.9036
+      },
+      "hours": {
+        "weekdays": {"open": "08:00", "close": "20:00"},
+        "saturday": {"open": "09:00", "close": "18:00"},
+        "sunday": {"open": "10:00", "close": "16:00"}
+      },
+      "services": ["parking", "loading", "consultation", "delivery", "warehouse"]
+    },
+    {
+      "id": "kena",
+      "city": "Kena",
+      "address": "Gelezinkelio g. 12, Kena",
+      "phone": "+370 5 345 6789",
+      "email": "kena@construkt.lt",
+      "coordinates": {
+        "lat": 54.6547,
+        "lng": 25.8312
+      },
+      "hours": {
+        "weekdays": {"open": "08:00", "close": "19:00"},
+        "saturday": {"open": "09:00", "close": "17:00"},
+        "sunday": {"open": "closed", "close": "closed"}
+      },
+      "services": ["parking", "loading", "consultation"]
+    }
+  ],
+  "delivery": {
+    "zones": [
+      {
+        "name": "Vilnius city",
+        "min_order": 50,
+        "cost": 10,
+        "free_from": 200,
+        "time": "1-2 business days"
+      },
+      {
+        "name": "Kaunas city",
+        "min_order": 50,
+        "cost": 10,
+        "free_from": 200,
+        "time": "1-2 business days"
+      },
+      {
+        "name": "Vilnius region",
+        "min_order": 100,
+        "cost": 20,
+        "free_from": 500,
+        "time": "2-3 business days"
+      },
+      {
+        "name": "All Lithuania",
+        "min_order": 150,
+        "cost": 35,
+        "free_from": 1000,
+        "time": "3-5 business days"
+      }
+    ],
+    "notes": [
+      "Delivery is on business days from 9:00 to 18:00",
+      "Large items may have additional delivery charges",
+      "Exact delivery time will be confirmed by phone"
+    ]
+  },
+  "contacts": {
+    "general_phone": "+370 800 12345",
+    "general_email": "info@construkt.lt",
+    "support_email": "support@construkt.lt",
+    "website": "www.construkt.lt"
+  },
+  "payment_methods": [
+    {"name": "Cash", "name_en": "Cash"},
+    {"name": "Bank card", "name_en": "Bank card"},
+    {"name": "Bank transfer", "name_en": "Bank transfer"},
+    {"name": "Leasing", "name_en": "Leasing"}
+  ],
+  "faq": [
+    {
+      "question": "Can I pick up the goods myself?",
+      "answer": "Yes, you can pick up goods at any of our stores during working hours. We will prepare the order within 1-2 hours of payment."
+    },
+    {
+      "question": "Do you deliver on weekends?",
+      "answer": "Standard delivery is only on weekdays. Weekend delivery is available for an additional fee - contact us."
+    },
+    {
+      "question": "How to return a product?",
+      "answer": "You can return products within 14 days of purchase if they have not been used and the original packaging is preserved. A purchase document is required for return."
+    }
+  ]
+}

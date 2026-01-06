@@ -1,0 +1,213 @@
+/* ChatWindow - Modern Dark Theme Design */
+
+/* Main container with shadow and glow effect */
+.chat-window-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 380px;
+  z-index: 1000;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 107, 0, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Card styling override */
+.chat-window {
+  border: none;
+  background: transparent;
+}
+
+/* Header with gradient */
+.chat-window .card-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+  cursor: pointer;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 107, 0, 0.3);
+  position: relative;
+}
+
+/* Orange accent line at top */
+.chat-window .card-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b00, #ff8533, #ff6b00);
+}
+
+/* Header title styling */
+.chat-window .card-header span {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Pulsing online indicator */
+.chat-window .card-header span::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #00ff88;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.9); }
+}
+
+/* Messages area */
+.chat-messages {
+  height: 380px;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 16px;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff6b00, #ff8533);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff8533, #ff6b00);
+}
+
+/* Footer area */
+.chat-window .card-footer {
+  padding: 0;
+  border-top: none;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Header buttons */
+.minimize-button, .close-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.minimize-button:hover, .close-button:hover {
+  background: rgba(255, 107, 0, 0.3);
+  border-color: rgba(255, 107, 0, 0.5);
+  color: white;
+  transform: scale(1.05);
+}
+
+.minimize-button:active, .close-button:active {
+  transform: scale(0.95);
+}
+
+/* Close button specific */
+.close-button:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Reset chat button */
+.reset-button {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 8px 0 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.reset-button .btn-link {
+  color: #94a3b8;
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.reset-button .btn-link:hover {
+  color: #ef4444;
+}
+
+/* Chevron icon animation */
+.chevron-icon {
+  transition: transform 0.3s ease;
+  font-size: 12px;
+}
+
+.chevron-icon.minimized {
+  transform: rotate(180deg);
+}
+
+/* Loading indicator */
+.chat-window .card-footer .bg-light {
+  background: linear-gradient(90deg, #f8fafc, #e2e8f0, #f8fafc);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Welcome message styling */
+.chat-messages .text-center.text-muted {
+  padding: 40px 20px;
+}
+
+.chat-messages .text-center.text-muted p:first-child {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.chat-messages .text-center.text-muted p.small {
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 440px) {
+  .chat-window-container {
+    width: calc(100vw - 20px);
+    right: 10px;
+    bottom: 10px;
+    border-radius: 12px;
+  }
+
+  .chat-messages {
+    height: 320px;
+  }
+}

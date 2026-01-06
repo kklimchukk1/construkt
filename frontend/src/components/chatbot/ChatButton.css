@@ -1,0 +1,15 @@
+/* ChatButton component styles */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 10%;
+  background-color: black;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+}

@@ -1,0 +1,7 @@
+/* Main Chatbot component styles */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
