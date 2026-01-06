@@ -163,3 +163,4 @@ npm install
 npm run build
 copy dist\chatbot-widget.js ..\php-site\js\
 ```
+
