@@ -75,10 +75,10 @@ require_once __DIR__ . '/includes/header.php';
                         <div class="order-item-info">
                             <h4><?= htmlspecialchars($item['name']) ?></h4>
                             <p>Quantity: <?= $item['quantity'] ?></p>
-                            <p>Price: $<?= number_format($item['price'], 2) ?> each</p>
+                            <p>Price: $<?= number_format($item['unit_price'], 2) ?> each</p>
                         </div>
                         <div class="order-item-total">
-                            $<?= number_format($item['price'] * $item['quantity'], 2) ?>
+                            $<?= number_format($item['subtotal'], 2) ?>
                         </div>
                     </div>
                     <?php endforeach; ?>

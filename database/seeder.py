@@ -240,7 +240,7 @@ class DatabaseSeeder:
                 self.stats['skipped'] += 1
             else:
                 self.cursor.execute("""
-                    INSERT INTO products (name, description, price, stock, unit, category_id, supplier_id, is_active)
+                    INSERT INTO products (name, description, price, stock_quantity, unit, category_id, supplier_id, is_active)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, 1)
                 """, (name, desc, price, stock, unit, cat_id, sup_id))
                 print(f"  [ADD] {name}")

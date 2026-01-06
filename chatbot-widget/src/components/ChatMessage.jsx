@@ -54,7 +54,9 @@ const ChatMessage = ({ message }) => {
                         <div className="chatbot-product-card__info">
                             <h4 className="chatbot-product-card__name">{product.name}</h4>
                             <p className="chatbot-product-card__price">
-                                ${Number(product.price).toFixed(2)}
+                                {typeof product.price === 'string' && product.price.startsWith('$')
+                                    ? product.price
+                                    : `$${Number(product.price_raw || product.price || 0).toFixed(2)}`}
                                 <span className="chatbot-product-card__unit">/{product.unit}</span>
                             </p>
                             <span className={`chatbot-product-card__stock ${product.stock_quantity > 0 ? 'in-stock' : 'out-stock'}`}>

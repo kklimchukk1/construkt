@@ -449,7 +449,7 @@ class CommandHandler:
         """Format products for response"""
         formatted = []
         for p in products:
-            stock = p.get('stock', 0) or 0
+            stock = p.get('stock_quantity', 0) or 0
             formatted.append({
                 'id': p['id'],
                 'name': p['name'],
@@ -475,7 +475,7 @@ class CommandHandler:
             except:
                 dimensions = {}
 
-        stock = product.get('stock', 0) or 0
+        stock = product.get('stock_quantity', 0) or 0
 
         return {
             'id': product['id'],

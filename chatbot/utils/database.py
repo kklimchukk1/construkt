@@ -558,14 +558,14 @@ class DatabaseConnector:
 
             cursor = self.connection.cursor()
             cursor.execute("""
-                INSERT INTO products (name, description, price, unit, stock, category_id, supplier_id, image_url, is_active)
+                INSERT INTO products (name, description, price, unit, stock_quantity, category_id, supplier_id, image_url, is_active)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 1)
             """, (
                 data.get('name'),
                 data.get('description', ''),
                 data.get('price', 0),
                 data.get('unit', 'pc'),
-                data.get('stock', 0),
+                data.get('stock_quantity', 0),
                 data.get('category_id'),
                 data.get('supplier_id'),
                 data.get('image_url', '')

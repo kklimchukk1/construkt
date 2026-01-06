@@ -32,6 +32,10 @@ class ConversationMemory:
     comparison_products: List[Dict] = field(default_factory=list)  # Products being compared
     last_intent: Optional[str] = None
     user_preferences: Dict = field(default_factory=dict)  # Size, material preferences
+    # Calculator state
+    calculator_material_type: Optional[str] = None
+    calculator_dimensions: Dict = field(default_factory=dict)
+    calculator_state: Optional[str] = None
 
     def add_message(self, content: str, is_user: bool, intent: str = None, products: List[Dict] = None):
         """Add a message to history"""

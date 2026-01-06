@@ -39,21 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $db->beginTransaction();
 
+            // Generate order number
+            $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
+
             // Create order
             $stmt = $db->prepare("
-                INSERT INTO orders (user_id, total_amount, status, shipping_address, phone, notes, created_at)
-                VALUES (?, ?, 'pending', ?, ?, ?, NOW())
+                INSERT INTO orders (user_id, order_number, total_amount, status, shipping_address, shipping_city, shipping_state, shipping_postal_code, phone, notes, created_at)
+                VALUES (?, ?, ?, 'pending', ?, '', '', '', ?, ?, NOW())
             ");
-            $stmt->execute([$user['id'], $subtotal, $address, $phone, $notes]);
+            $stmt->execute([$user['id'], $orderNumber, $subtotal, $address, $phone, $notes]);
             $orderId = $db->lastInsertId();
 
             // Create order items
             foreach ($cartItems as $item) {
+                $itemSubtotal = $item['price'] * $item['quantity'];
                 $stmt = $db->prepare("
-                    INSERT INTO order_items (order_id, product_id, quantity, price)
-                    VALUES (?, ?, ?, ?)
+                    INSERT INTO order_items (order_id, product_id, quantity, unit_price, subtotal)
+                    VALUES (?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$orderId, $item['product_id'], $item['quantity'], $item['price']]);
+                $stmt->execute([$orderId, $item['product_id'], $item['quantity'], $item['price'], $itemSubtotal]);
 
                 // Update stock
                 $stmt = $db->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?");

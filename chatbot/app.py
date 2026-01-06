@@ -3,6 +3,7 @@ Construkt Chatbot - Flask API Server
 Smart NLP-powered chatbot with unlimited context memory.
 """
 import os
+import re
 import threading
 import uuid
 from flask import Flask, request, jsonify
@@ -107,28 +108,45 @@ def process_message():
 
         # Check for calculator-related intent first
         message_lower = user_message.lower()
-        if any(word in message_lower for word in ['calculate', 'how much', 'area', 'square meter', 'cubic']):
-            if any(word in message_lower for word in ['paint', 'floor', 'concrete', 'wall', 'room']):
-                # Use calculator handler for material calculations
-                memory = engine.get_memory(user_id)
-                context = {
-                    'conversation_history': [m.get('content', '') for m in memory.messages[-10:]],
-                    'current_product': memory.current_product
-                }
+        memory = engine.get_memory(user_id)
 
-                calc_result = calculator_handler.handle_calculator_intent(user_message, context)
-                response = calc_result.get('response', calc_result.get('message', ''))
+        # Check if we're in calculator mode or message contains calculator keywords
+        in_calculator_mode = getattr(memory, 'calculator_state', None) == 'awaiting_dimensions'
+        has_calculator_keywords = any(word in message_lower for word in ['calculate', 'how much', 'area', 'square meter', 'cubic', 'volume', 'm2', 'm3'])
+        has_material_keywords = any(word in message_lower for word in ['paint', 'floor', 'concrete', 'wall', 'room', 'tile', 'brick'])
+        has_dimensions = bool(re.search(r'\d+\s*[xх×*]\s*\d+|\d+\s*(?:m|м|meter)', message_lower))
 
-                log_conversation_async(user_id, user_message, response, 'calculator')
+        if in_calculator_mode or (has_calculator_keywords and has_material_keywords) or (in_calculator_mode and has_dimensions):
+            # Use calculator handler for material calculations
+            context = {
+                'conversation_history': [m.get('content', '') for m in memory.messages[-10:]],
+                'current_product': memory.current_product,
+                'current_product_id': memory.current_product.get('id') if memory.current_product else None,
+                'calculator_material_type': getattr(memory, 'calculator_material_type', None),
+                'calculator_dimensions': getattr(memory, 'calculator_dimensions', {}),
+                'calculator_state': getattr(memory, 'calculator_state', None)
+            }
 
-                print(f"Bot (calculator): {response[:100]}...")
-                return jsonify({
-                    'message': response,
-                    'intent': 'calculator',
-                    'confidence': 1.0,
-                    'data': calc_result.get('data', {}),
-                    'user_id': user_id
-                })
+            calc_result = calculator_handler.handle_calculator_intent(user_message, context)
+            response = calc_result.get('response', calc_result.get('message', ''))
+
+            # Save calculator context update to memory
+            if calc_result.get('data', {}).get('context_update'):
+                ctx_update = calc_result['data']['context_update']
+                memory.calculator_material_type = ctx_update.get('calculator_material_type')
+                memory.calculator_dimensions = ctx_update.get('calculator_dimensions', {})
+                memory.calculator_state = ctx_update.get('calculator_state')
+
+            log_conversation_async(user_id, user_message, response, 'calculator')
+
+            print(f"Bot (calculator): {response[:100]}...")
+            return jsonify({
+                'message': response,
+                'intent': 'calculator',
+                'confidence': 1.0,
+                'data': calc_result.get('data', {}),
+                'user_id': user_id
+            })
 
         # Check for store information queries (hours, location, delivery, contacts)
         if is_store_info_query(user_message):
@@ -183,17 +201,21 @@ def process_message():
 
         # Include product data if available - format for widget rendering
         if products:
+            # Debug: print product data
+            for p in products[:2]:
+                print(f"DEBUG product: {p.get('name')} - stock_quantity={p.get('stock_quantity')} - keys={list(p.keys())}")
+
             # Format products with links for clickable cards
             formatted_products = []
             for p in products[:6]:
                 formatted_products.append({
                     'id': p.get('id'),
                     'name': p.get('name'),
-                    'price': float(p.get('price', 0)),
+                    'price': float(p.get('price', 0) or 0),
                     'unit': p.get('unit', 'piece'),
-                    'stock_quantity': p.get('stock_quantity', 0),
+                    'stock_quantity': int(p.get('stock_quantity', 0) or 0),
                     'category_name': p.get('category_name', ''),
-                    'thumbnail': p.get('thumbnail'),
+                    'thumbnail': p.get('thumbnail') or p.get('image_url') or '',
                     'link': f"/product.php?id={p.get('id')}"
                 })
             response_data['data'] = {
@@ -628,9 +650,9 @@ def api_products():
                 'category_name': p.get('category_name', 'General'),
                 'supplier_id': p.get('supplier_id'),
                 'supplier_name': p.get('supplier_name', ''),
-                'stock_quantity': p.get('stock_quantity', 0),
+                'stock_quantity': int(p.get('stock_quantity', 0) or 0),
                 'is_featured': p.get('is_featured', 0),
-                'thumbnail': p.get('thumbnail'),
+                'thumbnail': p.get('thumbnail') or p.get('image_url') or '',
                 'dimensions': p.get('dimensions'),
                 'calculation_type': p.get('calculation_type', 'unit')
             })
