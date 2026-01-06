@@ -450,6 +450,7 @@ class CommandHandler:
         formatted = []
         for p in products:
             stock = p.get('stock_quantity', 0) or 0
+            print(f"DEBUG _format_products: {p.get('name')} stock_quantity={p.get('stock_quantity')} -> stock={stock}")
             formatted.append({
                 'id': p['id'],
                 'name': p['name'],
