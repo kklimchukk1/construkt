@@ -62,14 +62,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetchColumn() > 0) {
             $error = 'Cannot delete category with products';
         } else {
+            // Delete category image if exists
+            $imagePath = __DIR__ . '/images/categories/' . $categoryId . '.jpg';
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+            // Delete category from database
             $db->prepare("DELETE FROM categories WHERE id = ?")->execute([$categoryId]);
-            $message = 'Category deleted';
+            // Redirect to prevent form resubmission
+            header('Location: /admin.php?tab=categories&deleted=1');
+            exit;
         }
     }
 }
 
 // Get tab
 $tab = $_GET['tab'] ?? 'dashboard';
+
+// Check for success message from redirect
+if (isset($_GET['deleted'])) {
+    $message = 'Category deleted successfully';
+}
 
 // Fetch data based on tab
 $stats = [];
@@ -253,7 +266,7 @@ require_once __DIR__ . '/includes/header.php';
         <!-- Products CRUD -->
         <div class="section-header">
             <h2>Products</h2>
-            <a href="/product-edit.php" class="btn btn-success">+ Add Product</a>
+            <a href="/product-edit.php?ref=admin" class="btn btn-success">+ Add Product</a>
         </div>
         <div class="products-grid">
             <?php foreach ($products as $p): ?>
@@ -271,8 +284,8 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
                 <div class="product-actions">
-                    <a href="/product-edit.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
-                    <form method="POST" class="inline" onsubmit="return confirm('Delete?')">
+                    <a href="/product-edit.php?id=<?= $p['id'] ?>&ref=admin" class="btn btn-sm btn-primary">Edit</a>
+                    <form method="POST" action="/admin.php?tab=products" class="inline" onsubmit="return confirm('Delete?')">
                         <input type="hidden" name="action" value="delete_product">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -286,7 +299,7 @@ require_once __DIR__ . '/includes/header.php';
         <!-- Categories CRUD -->
         <div class="section-header">
             <h2>Categories</h2>
-            <a href="/category-edit.php" class="btn btn-success">+ Add Category</a>
+            <a href="/category-edit.php?ref=admin" class="btn btn-success">+ Add Category</a>
         </div>
         <div class="categories-grid">
             <?php foreach ($categories as $c):
@@ -302,13 +315,15 @@ require_once __DIR__ . '/includes/header.php';
                     <span class="product-count"><?= $count ?> products</span>
                 </div>
                 <div class="category-actions">
-                    <a href="/category-edit.php?id=<?= $c['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="/category-edit.php?id=<?= $c['id'] ?>&ref=admin" class="btn btn-sm btn-primary">Edit</a>
                     <?php if ($count == 0): ?>
-                    <form method="POST" class="inline" onsubmit="return confirm('Delete?')">
+                    <form method="POST" action="/admin.php?tab=categories" class="inline" onsubmit="return confirm('Delete this category?')">
                         <input type="hidden" name="action" value="delete_category">
                         <input type="hidden" name="category_id" value="<?= $c['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    <?php else: ?>
+                    <span class="btn btn-sm btn-disabled" title="Remove products first">Delete</span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -600,6 +615,7 @@ require_once __DIR__ . '/includes/header.php';
 .btn-success:hover { background: #059669; }
 .btn-danger { background: #ef4444; color: white; }
 .btn-danger:hover { background: #dc2626; }
+.btn-disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
 .inline { display: inline; }
 .badge { padding: 4px 10px; background: #e2e8f0; border-radius: 20px; font-size: 0.8rem; color: #64748b; }
 

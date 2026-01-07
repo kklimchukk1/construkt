@@ -54,14 +54,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetchColumn() > 0) {
             $error = 'Cannot delete category with products';
         } else {
+            // Delete category image if exists
+            $imagePath = __DIR__ . '/images/categories/' . $categoryId . '.jpg';
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+            // Delete category from database
             $db->prepare("DELETE FROM categories WHERE id = ?")->execute([$categoryId]);
-            $message = 'Category deleted';
+            // Redirect to prevent form resubmission
+            header('Location: /manager.php?tab=categories&deleted=1');
+            exit;
         }
     }
 }
 
 // Get tab
 $tab = $_GET['tab'] ?? 'products';
+
+// Check for success message from redirect
+if (isset($_GET['deleted'])) {
+    $message = 'Category deleted successfully';
+}
 
 // Fetch data
 $products = [];
@@ -146,8 +159,8 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
                 <div class="product-actions">
-                    <a href="/product-edit.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
-                    <form method="POST" class="inline" onsubmit="return confirm('Delete this product?')">
+                    <a href="/product-edit.php?id=<?= $p['id'] ?>&ref=manager" class="btn btn-sm btn-primary">Edit</a>
+                    <form method="POST" action="/manager.php?tab=products" class="inline" onsubmit="return confirm('Delete this product?')">
                         <input type="hidden" name="action" value="delete_product">
                         <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -161,7 +174,7 @@ require_once __DIR__ . '/includes/header.php';
         <!-- Categories CRUD -->
         <div class="section-header">
             <h2>Categories</h2>
-            <a href="/category-edit.php" class="btn btn-success">+ Add Category</a>
+            <a href="/category-edit.php?ref=manager" class="btn btn-success">+ Add Category</a>
         </div>
 
         <div class="categories-grid">
@@ -181,13 +194,15 @@ require_once __DIR__ . '/includes/header.php';
                     <span class="product-count"><?= $count ?> products</span>
                 </div>
                 <div class="category-actions">
-                    <a href="/category-edit.php?id=<?= $c['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="/category-edit.php?id=<?= $c['id'] ?>&ref=manager" class="btn btn-sm btn-primary">Edit</a>
                     <?php if ($count == 0): ?>
-                    <form method="POST" class="inline" onsubmit="return confirm('Delete this category?')">
+                    <form method="POST" action="/manager.php?tab=categories" class="inline" onsubmit="return confirm('Delete this category?')">
                         <input type="hidden" name="action" value="delete_category">
                         <input type="hidden" name="category_id" value="<?= $c['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    <?php else: ?>
+                    <span class="btn btn-sm btn-disabled" title="Remove products first">Delete</span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -461,6 +476,7 @@ require_once __DIR__ . '/includes/header.php';
 .btn-success:hover { background: #059669; }
 .btn-danger { background: #ef4444; color: white; }
 .btn-danger:hover { background: #dc2626; }
+.btn-disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
 
 .inline { display: inline; }
 

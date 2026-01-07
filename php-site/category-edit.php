@@ -16,6 +16,14 @@ $isEdit = $categoryId > 0;
 $pageTitle = $isEdit ? 'Edit Category' : 'Add Category';
 $error = '';
 
+// Determine return URL based on referrer or user role
+$ref = $_GET['ref'] ?? $_POST['ref'] ?? '';
+if ($ref === 'admin' && $user['role'] === 'admin') {
+    $returnUrl = '/admin.php?tab=categories';
+} else {
+    $returnUrl = '/manager.php?tab=categories';
+}
+
 // Get category data if editing
 $category = [
     'name' => '',
@@ -28,7 +36,7 @@ if ($isEdit) {
     $stmt->execute([$categoryId]);
     $category = $stmt->fetch();
     if (!$category) {
-        header('Location: /manager.php?tab=categories');
+        header('Location: ' . $returnUrl);
         exit;
     }
 }
@@ -47,9 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $db->prepare("UPDATE categories SET name = ?, description = ?, image = ? WHERE id = ?");
                 $stmt->execute([$name, $description, $imageUrl ?: null, $categoryId]);
             } else {
-                $stmt = $db->prepare("INSERT INTO categories (name, slug, description, image) VALUES (?, ?, ?, ?)");
-                $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $name));
-                $stmt->execute([$name, $slug, $description, $imageUrl ?: null]);
+                $stmt = $db->prepare("INSERT INTO categories (name, description, image) VALUES (?, ?, ?)");
+                $stmt->execute([$name, $description, $imageUrl ?: null]);
                 $categoryId = $db->lastInsertId();
             }
 
@@ -104,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header('Location: /manager.php?tab=categories');
+            header('Location: ' . $returnUrl);
             exit;
         } catch (PDOException $e) {
             $error = 'Database error: ' . $e->getMessage();
@@ -128,7 +135,7 @@ require_once __DIR__ . '/includes/header.php';
 <div class="edit-container">
     <div class="edit-header">
         <h1><?= $pageTitle ?></h1>
-        <a href="/manager.php?tab=categories" class="btn btn-outline">Back to Categories</a>
+        <a href="<?= htmlspecialchars($returnUrl) ?>" class="btn btn-outline">Back to Categories</a>
     </div>
 
     <?php if ($error): ?>
@@ -137,6 +144,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="edit-content">
         <form method="POST" enctype="multipart/form-data" class="edit-form">
+            <input type="hidden" name="ref" value="<?= htmlspecialchars($ref) ?>">
             <div class="form-layout">
                 <div class="form-main">
                     <div class="form-group">
@@ -194,7 +202,7 @@ require_once __DIR__ . '/includes/header.php';
                 <button type="submit" class="btn btn-primary btn-lg">
                     <?= $isEdit ? 'Update Category' : 'Create Category' ?>
                 </button>
-                <a href="/manager.php?tab=categories" class="btn btn-outline btn-lg">Cancel</a>
+                <a href="<?= htmlspecialchars($returnUrl) ?>" class="btn btn-outline btn-lg">Cancel</a>
             </div>
         </form>
     </div>

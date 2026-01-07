@@ -16,6 +16,14 @@ $isEdit = $productId > 0;
 $pageTitle = $isEdit ? 'Edit Product' : 'Add Product';
 $error = '';
 
+// Determine return URL based on referrer or user role
+$ref = $_GET['ref'] ?? $_POST['ref'] ?? '';
+if ($ref === 'admin' && $user['role'] === 'admin') {
+    $returnUrl = '/admin.php?tab=products';
+} else {
+    $returnUrl = '/manager.php?tab=products';
+}
+
 // Get categories for dropdown
 $categories = $db->query("SELECT * FROM categories ORDER BY name")->fetchAll();
 
@@ -36,7 +44,7 @@ if ($isEdit) {
     $stmt->execute([$productId]);
     $product = $stmt->fetch();
     if (!$product) {
-        header('Location: /manager.php?tab=products');
+        header('Location: ' . $returnUrl);
         exit;
     }
 }
@@ -127,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header('Location: /manager.php?tab=products');
+            header('Location: ' . $returnUrl);
             exit;
         } catch (PDOException $e) {
             $error = 'Database error: ' . $e->getMessage();
@@ -161,7 +169,7 @@ require_once __DIR__ . '/includes/header.php';
 <div class="edit-container">
     <div class="edit-header">
         <h1><?= $pageTitle ?></h1>
-        <a href="/manager.php?tab=products" class="btn btn-outline">Back to Products</a>
+        <a href="<?= htmlspecialchars($returnUrl) ?>" class="btn btn-outline">Back to Products</a>
     </div>
 
     <?php if ($error): ?>
@@ -170,6 +178,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="edit-content">
         <form method="POST" enctype="multipart/form-data" class="edit-form">
+            <input type="hidden" name="ref" value="<?= htmlspecialchars($ref) ?>">
             <div class="form-grid">
                 <div class="form-main">
                     <div class="form-group">
@@ -274,7 +283,7 @@ require_once __DIR__ . '/includes/header.php';
                 <button type="submit" class="btn btn-primary btn-lg">
                     <?= $isEdit ? 'Update Product' : 'Create Product' ?>
                 </button>
-                <a href="/manager.php?tab=products" class="btn btn-outline btn-lg">Cancel</a>
+                <a href="<?= htmlspecialchars($returnUrl) ?>" class="btn btn-outline btn-lg">Cancel</a>
             </div>
         </form>
     </div>
